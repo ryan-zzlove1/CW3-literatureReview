@@ -493,4 +493,32 @@ const selectors = (function() {
         return 0.0;
     }
 
+
+    function selectDefaultKeywords() {
+   
+        selectors.toggleSelector('keywords', 'classical-cnn');
+        selectors.toggleSelector('keywords', 'enhanced-cnn');
+        selectors.toggleSelector('keywords', 'transformer-based');
+    }
+
+   
+    var originalReadQueryFromUrl = selectors.readQueryFromUrl;
+    selectors.readQueryFromUrl = function() {
+        
+        originalReadQueryFromUrl.call(this);
+        
+       
+        var hasSelectors = false;
+        for (var i = 0; i < this.nSelectors; i++) {
+            if (this.selectors[i]) {
+                hasSelectors = true;
+                break;
+            }
+        }
+        
+        if (!hasSelectors) {
+        
+            selectDefaultKeywords();
+        }
+    };
 })();
